@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
+      rel="stylesheet"
+    />
+    <title>Vite App</title>
+    <script type="module" crossorigin src="/assets/index-CY_Z9unP.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-C5d3DzBP.css">
+  </head>
+  <body>
+    <div id="app">
+      <h1>💣💣💣 Buscaminas 💣💣💣</h1>
+
+      <section class="instructions">
+        <h2 class="instructions-title">📜 Instrucciones del Juego</h2>
+        <ul>
+          <li>
+            Selecciona el <strong>tamaño del tablero</strong> (Pequeño, Mediano
+            o Grande).
+          </li>
+          <li>
+            Elige la <strong>dificultad</strong> (Fácil, Normal o Difícil).
+            <br /><small>💡 A mayor dificultad → más minas escondidas.</small>
+          </li>
+          <li>
+            Haz <strong>clic izquierdo</strong> en una celda para revelarla.
+          </li>
+          <li>
+            Haz <strong>clic derecho</strong> en una celda para marcarla con una
+            🚩 (sospecha de mina).
+          </li>
+          <li>Si revelas una <strong>mina 💣</strong>, ¡pierdes la partida!</li>
+          <li>
+            Si revelas todas las celdas que <u>no son minas</u>, ¡ganas la
+            partida 🎉!
+          </li>
+          <li>
+            El <strong>tiempo</strong> se guarda automáticamente como récord si
+            logras una victoria más rápida.
+          </li>
+          <li>
+            El <strong>tiempo</strong> inicia automáticamente al seleccionar
+            tamaño y dificultad.
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <div class="control-container">
+          <div class="control">
+            <h3 class="control-title">Tamaño del tablero</h3>
+            <button class="size btn">Pequeño</button>
+            <button class="size btn">Mediano</button>
+            <button class="size btn">Grande</button>
+          </div>
+          <div class="control">
+            <h3 class="control-title">Dificultad</h3>
+            <button class="mode btn">Fácil</button>
+            <button class="mode btn">Normal</button>
+            <button class="mode btn">Difícil</button>
+          </div>
+        </div>
+
+        <div class="hud">
+          <div>
+            <p class="label">
+              Minas Totales: <span class="value" id="nAllMines">0</span>
+            </p>
+          </div>
+          <div>
+            <p class="label">
+              Banderas Colocadas: <span class="value" id="nFlagsPlaced">0</span>
+            </p>
+          </div>
+          <div>
+            <p class="label">
+              Tiempo: <span class="timer value">00:00:00</span>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <div id="board-wrapper">
+        <div id="board"></div>
+      </div>
+
+      <section>
+        <h2 class="bestTimesTitle">Tus mejores tiempos</h2>
+        <div class="bestTimesDiv">
+          <div class="container">
+            <h3>Pequeño</h3>
+            <div class="timesContainer">
+              <h4>Fácil</h4>
+              <span class="timeSpan" data-mode="easy" data-size="8"
+                >SIN TIEMPO</span
+              >
+              <h4>Normal</h4>
+              <span class="timeSpan" data-mode="normal" data-size="8"
+                >SIN TIEMPO</span
+              >
+              <h4>Difícil</h4>
+              <span class="timeSpan" data-mode="hard" data-size="8"
+                >SIN TIEMPO</span
+              >
+            </div>
+          </div>
+
+          <div class="container">
+            <h3>Mediano</h3>
+            <div class="timesContainer">
+              <h4>Fácil</h4>
+              <span class="timeSpan" data-size="16" data-mode="easy"
+                >SIN TIEMPO</span
+              >
+              <h4>Normal</h4>
+              <span class="timeSpan" data-size="16" data-mode="normal"
+                >SIN TIEMPO</span
+              >
+              <h4>Difícil</h4>
+              <span class="timeSpan" data-size="16" data-mode="hard"
+                >SIN TIEMPO</span
+              >
+            </div>
+          </div>
+
+          <div class="container">
+            <h3>Grande</h3>
+            <div class="timesContainer">
+              <h4>Fácil</h4>
+              <span class="timeSpan" data-size="24" data-mode="easy"
+                >SIN TIEMPO</span
+              >
+              <h4>Normal</h4>
+              <span class="timeSpan" data-size="24" data-mode="normal"
+                >SIN TIEMPO</span
+              >
+              <h4>Difícil</h4>
+              <span class="timeSpan" data-size="24" data-mode="hard"
+                >SIN TIEMPO</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>
