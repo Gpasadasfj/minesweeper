@@ -361,6 +361,10 @@ li {
 
 /* --- MEDIA QUERIES para tablet y desktop --- */
 @media (min-width: 600px) {
+  h1 {
+    font-size: 42px;
+  }
+
   .bestTimesDiv {
     flex-direction: row;
     justify-content: center;
