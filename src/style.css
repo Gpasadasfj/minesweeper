@@ -16,7 +16,7 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  font-family: "Press Start 2P", cursive;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: 400;
   font-style: normal;
   background: linear-gradient(to right, var(--bg) 0%, var(--accent-2) 100%);
