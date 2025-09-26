@@ -87,7 +87,7 @@ export default class UIManager {
     const table = document.createElement("table");
     table.id = "table";
 
-    const boardWrapper = document.querySelector("#board-wrapper") 
+    const boardWrapper = document.querySelector("#board-wrapper");
     // boardWrapper.className = "board-wrapper"
 
     for (let i = 0; i < this.board.size; i++) {
@@ -105,13 +105,26 @@ export default class UIManager {
         cellEl.addEventListener("contextmenu", (e) =>
           this.handleFlagClick(e, i, j)
         );
+
+        // Long press -> colocar bandera (móvil)
+        let pressTimer;
+        cellEl.addEventListener("touchstart", (e) => {
+          pressTimer = setTimeout(() => {
+            e.preventDefault();
+            this.handleFlagClick(e, i, j);
+          }, 500); // medio segundo para detectar "mantener pulsado"
+        });
+        cellEl.addEventListener("touchend", () => {
+          clearTimeout(pressTimer);
+        });
+
         row.appendChild(cellEl);
       }
       table.appendChild(row);
     }
     // boardWrapper.appendChild(container)
     container.appendChild(table);
-    boardWrapper.className = "board-wrapper"
+    boardWrapper.className = "board-wrapper";
   }
 
   renderCell(i, j) {
@@ -136,7 +149,6 @@ export default class UIManager {
     } else {
       el.textContent = "";
     }
-    
   }
 
   // ----- Manejo de clicks -----
