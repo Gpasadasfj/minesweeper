@@ -1,4 +1,5 @@
 import Board from "../class/Board";
+import isMobile from "../utils/CheckDevice";
 
 export default class UIManager {
   constructor(timer, sound, records) {
@@ -19,6 +20,9 @@ export default class UIManager {
 
     // Cargar records
     this.records.loadRecords();
+
+    // Comprobar dispositivo
+    this.useMobileEvents = isMobile();
   }
 
   // ----- Inicialización de botones -----
@@ -96,11 +100,13 @@ export default class UIManager {
         const cellEl = document.createElement("td");
         this.board.cells[i][j].element = cellEl;
 
-        // Eventos en PC
-        this.PCEventsHandler(cellEl, i, j);
-
-        // Eventos de móvil
-        this.mobileEventsHandler(cellEl, i, j);
+        if (this.useMobileEvents) {
+          // Activar eventos de móvil
+          this.mobileEventsHandler(cellEl, i, j);
+        } else {
+          // Activar eventos en PC
+          this.PCEventsHandler(cellEl, i, j);
+        }
 
         row.appendChild(cellEl);
       }
@@ -115,9 +121,7 @@ export default class UIManager {
   PCEventsHandler(element, i, j) {
     // Eventos de PC
     element.addEventListener("click", (event) => {
-      if (event.pointerType === "mouse" && event.button === 0) {
-        this.handleCellClick(i, j); // click izquierdo revela
-      }
+      this.handleCellClick(i, j); // click izquierdo revela
     });
 
     element.addEventListener("contextmenu", (event) => {
@@ -132,7 +136,6 @@ export default class UIManager {
     let longPress = false;
 
     element.addEventListener("pointerdown", (e) => {
-      if (e.pointerType !== "touch") return; // solo móvil
       longPress = false;
       pressTimer = setTimeout(() => {
         longPress = true;
@@ -141,9 +144,14 @@ export default class UIManager {
     });
 
     element.addEventListener("pointerup", (e) => {
-      if (e.pointerType !== "touch") return; // solo móvil
       clearTimeout(pressTimer);
-      if (!longPress) this.handleCellClick(i, j); // tap normal revela
+      if (longPress) {
+        // Si fue long press no revelar
+        e.preventDefault();
+        return;
+      }
+
+      this.handleCellClick(i, j);
     });
 
     element.addEventListener("pointercancel", () => clearTimeout(pressTimer));
