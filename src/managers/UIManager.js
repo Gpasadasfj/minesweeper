@@ -82,49 +82,71 @@ export default class UIManager {
   }
 
   renderBoard(container) {
-    // Lógica de renderizado
+    // Crear tablero y celdas y añadirles EventListener
     container.innerHTML = "";
     const table = document.createElement("table");
     table.id = "table";
 
     const boardWrapper = document.querySelector("#board-wrapper");
-    // boardWrapper.className = "board-wrapper"
 
     for (let i = 0; i < this.board.size; i++) {
       const row = document.createElement("tr");
 
       for (let j = 0; j < this.board.size; j++) {
         const cellEl = document.createElement("td");
-        // Asignar referencia al DOM a cada celda
         this.board.cells[i][j].element = cellEl;
 
-        // Click izquierdo -> revelar celda
-        cellEl.addEventListener("click", () => this.handleCellClick(i, j));
+        // Eventos en PC
+        this.PCEventsHandler(cellEl, i, j);
 
-        // Click derecho -> colocar bandera
-        cellEl.addEventListener("contextmenu", (e) =>
-          this.handleFlagClick(e, i, j)
-        );
-
-        // Long press -> colocar bandera (móvil)
-        let pressTimer;
-        cellEl.addEventListener("touchstart", (e) => {
-          pressTimer = setTimeout(() => {
-            e.preventDefault();
-            this.handleFlagClick(e, i, j);
-          }, 500); // medio segundo para detectar "mantener pulsado"
-        });
-        cellEl.addEventListener("touchend", () => {
-          clearTimeout(pressTimer);
-        });
+        // Eventos de móvil
+        this.mobileEventsHandler(cellEl, i, j);
 
         row.appendChild(cellEl);
       }
       table.appendChild(row);
     }
-    // boardWrapper.appendChild(container)
+
     container.appendChild(table);
     boardWrapper.className = "board-wrapper";
+  }
+
+  // ----- Eventos del tablero -----
+  PCEventsHandler(element, i, j) {
+    // Eventos de PC
+    element.addEventListener("click", (event) => {
+      if (event.pointerType === "mouse" && event.button === 0) {
+        this.handleCellClick(i, j); // click izquierdo revela
+      }
+    });
+
+    element.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      this.handleFlagClick(event, i, j); // click derecho bandera
+    });
+  }
+
+  mobileEventsHandler(element, i, j) {
+    // Eventos de móvil
+    let pressTimer = null;
+    let longPress = false;
+
+    element.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "touch") return; // solo móvil
+      longPress = false;
+      pressTimer = setTimeout(() => {
+        longPress = true;
+        this.handleFlagClick(e, i, j); // poner bandera
+      }, 250);
+    });
+
+    element.addEventListener("pointerup", (e) => {
+      if (e.pointerType !== "touch") return; // solo móvil
+      clearTimeout(pressTimer);
+      if (!longPress) this.handleCellClick(i, j); // tap normal revela
+    });
+
+    element.addEventListener("pointercancel", () => clearTimeout(pressTimer));
   }
 
   renderCell(i, j) {
@@ -155,7 +177,8 @@ export default class UIManager {
   handleCellClick(i, j) {
     // Click izquierdo
     const cell = this.board.cells[i][j];
-    if (this.board.isGameOver || this.board.isWinner || cell.isRevealed) return;
+    if (this.board.isGameOver || this.board.checkWinner() || cell.isRevealed)
+      return;
 
     this.board.revealCell(i, j);
 
@@ -166,13 +189,8 @@ export default class UIManager {
     }
 
     // Verificar victoria
-    if (
-      this.board.openCells ===
-      this.board.size * this.board.size - this.board.mines
-    ) {
-      if (this.board.isGameOver) {
-        return;
-      }
+    if (this.board.checkWinner()) {
+      this.board.checkWinner(); // bloquea más clicks
       this.handleVictory();
     }
   }
@@ -181,7 +199,8 @@ export default class UIManager {
     // Click derecho
     e.preventDefault();
     const cell = this.board.cells[i][j];
-    if (this.board.isGameOver || this.board.isWinner || cell.isRevealed) return;
+    if (this.board.isGameOver || this.board.checkWinner() || cell.isRevealed)
+      return;
 
     this.sound.playFlag();
     if (cell.isRevealed) return;

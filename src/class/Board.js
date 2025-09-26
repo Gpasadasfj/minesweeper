@@ -11,7 +11,6 @@ export default class Board {
     this.openCells = 0;
     this.isGameOver = false;
     this.onGameOver = null;
-    this.isWinner = false;
     this.onCellReveal = null;
     this.deltas = [
       [-1, -1],
@@ -127,7 +126,7 @@ export default class Board {
       this.revealEmptyCells(i, j);
     }
 
-    this.checkWinner();
+    // this.checkWinner();
   }
 
   revealEmptyCells(i, j) {
@@ -173,8 +172,6 @@ export default class Board {
 
   checkWinner() {
     // Comprobar si hay ganador
-    if (this.openCells === this.size * this.size - this.mines) {
-      this.isWinner = true;
-    }
+    return this.openCells === this.size * this.size - this.mines;
   }
 }

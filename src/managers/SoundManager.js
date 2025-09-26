@@ -9,22 +9,26 @@ export default class SoundManager {
     this.flagAudio = new Audio(flagSound);
     this.mineAudio = new Audio(mineSound);
     this.victoryAudio = new Audio(victorySound);
+    this.victoryAudio.preload = "auto";
+    this.mineAudio.preload = "auto";
+    this.flagAudio.preload = "auto";
+    this.defaultAudio.preload = "auto";
   }
 
   playDefault() {
-    this.defaultAudio.load();
+    this.defaultAudio.currentTime = 0
     this.defaultAudio.play();
   }
   playFlag() {
-    this.flagAudio.load();
+    this.flagAudio.currentTime = 0;
     this.flagAudio.play();
   }
   playMine() {
-    this.mineAudio.load();
+    this.mineAudio.currentTime = 0;
     this.mineAudio.play();
   }
   playVictory() {
-    this.victoryAudio.load();
+    this.victoryAudio.currentTime = 0;
     this.victoryAudio.play();
   }
 }
