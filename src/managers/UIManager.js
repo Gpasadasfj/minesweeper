@@ -198,7 +198,6 @@ export default class UIManager {
 
     // Verificar victoria
     if (this.board.checkWinner()) {
-      this.board.checkWinner(); // bloquea más clicks
       this.handleVictory();
     }
   }
